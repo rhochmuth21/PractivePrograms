@@ -626,7 +626,47 @@ public class BankGui implements ActionListener
 		// firstLbl setup
 		firstLbl.setBounds(800 + 90, 116, 400, 40);
 		firstLbl.setFont(lintel);
-		firstLbl.setText("Enter the Deposit amount:");
+		firstLbl.setText("Enter the deposit amount:");
+		firstLbl.setVisible(true);
+		
+		bgLbl.add(firstText);
+		
+		// firstText setup
+		firstText.setBounds(800 + 90, 156, 240, 40);
+		firstText.setFont(lintel);
+		firstText.setVisible(true);
+		
+		bgLbl.add(sideOkBtn);
+		
+		// sideOkBtn setup
+		sideOkBtn.setBorderPainted(false);
+		sideOkBtn.setOpaque(false);
+		sideOkBtn.setContentAreaFilled(false);
+		sideOkBtn.setFocusPainted(false);
+		sideOkBtn.setIcon(new ImageIcon(scaleImage(new ImageIcon("src/res/button2.png").getImage(), 160, 50)));
+		sideOkBtn.setRolloverIcon(new ImageIcon(scaleImage(new ImageIcon("src/res/button2Hover.png").getImage(), 160, 50)));
+		sideOkBtn.setText("Ok");
+		sideOkBtn.setHorizontalTextPosition(JButton.CENTER);
+		sideOkBtn.setVerticalTextPosition(JButton.CENTER);
+		sideOkBtn.setFont(lintel);
+		sideOkBtn.setForeground(Color.black);
+		sideOkBtn.setBounds(800 + 130, 216, 160, 50);
+		sideOkBtn.setVisible(true);
+		
+		frame.repaint();
+	}
+	
+	/**
+	 * Show the GUI for a withdraw.
+	 */
+	public void withdraw()
+	{
+		bgLbl.add(firstLbl);
+		
+		// firstLbl setup
+		firstLbl.setBounds(800 + 90, 116, 400, 40);
+		firstLbl.setFont(lintel);
+		firstLbl.setText("Enter the withdraw amount:");
 		firstLbl.setVisible(true);
 		
 		bgLbl.add(firstText);
@@ -810,6 +850,8 @@ public class BankGui implements ActionListener
 		if (e.getSource() == option1Btn)
 		{
 			sideChoice = 1;
+			resetSideContent();
+			bank.checkBalance();
 			showBankTab();
 		}
 		// Bank Option 2: Perform the second option
@@ -823,6 +865,7 @@ public class BankGui implements ActionListener
 		if (e.getSource() == option3Btn)
 		{
 			sideChoice = 3;
+			withdraw();
 			showBankTab();
 		}
 		
@@ -848,6 +891,10 @@ public class BankGui implements ActionListener
 			resetSideContent();
 			createCheckingAccount();
 		}
+		
+		/****************************************
+		 * Side Content
+		 ***************************************/
 		if (e.getSource() == sideOkBtn)
 		{
 			switch (sideChoice)
@@ -864,6 +911,7 @@ public class BankGui implements ActionListener
 					break;
 					
 				case 3:
+					bank.withdraw(firstText.getText());
 					resetSideContent();
 					showBankTab();
 					break;

@@ -48,6 +48,18 @@ public abstract class Account
 	}
 	
 	/**
+	 * Take funds from the balance of this account.
+	 * @precondition
+	 * The given amount must be greater than 0
+	 * @param amount -  the amount of funds to take from the balance
+	 */
+	public void withdraw(double amount)
+	{
+		if (amount > 0)
+			this.balance -= amount;
+	}
+	
+	/**
 	 * Get the balance of this account.
 	 * @return balance - the balance
 	 */

@@ -35,20 +35,6 @@ public class Bank
 	 */
 	public void menu(int choice)
 	{
-		// Perform an action based on input
-		switch(choice)
-		{
-			case 1: // Check balance
-				checkBalance(currentAccount);
-				break;
-				
-			case 3: // Withdraw
-				break;
-				
-			default:
-				JOptionPane.showMessageDialog(null, "Improper option.");
-		}
-		
 		System.out.println("\n\nBank Accounts:");
 		
 		if (database.getAccountList().size() > 0)
@@ -284,24 +270,27 @@ public class Bank
 	/**
 	 * Check the balance of a bank account.
 	 * @param account - the account to return the balance of
+	 * @return double - the balance of the account
 	 */
-	public void checkBalance(Account account)
+	public double checkBalance()
 	{
-		if (account == null)
+		if (currentAccount == null)
 		{
 			JOptionPane.showMessageDialog(null, "Check balance failed, the given account was null.");
-			return;
+			return -1;
 		}
 		
 		JOptionPane.showMessageDialog(null, "The balance of " + 
-				account.getName() + "'s account with " + 
-				"account # " + account.getId() +
-				" is:\n $" + account.getBalance() + ".");
+				currentAccount.getName() + "'s account with " + 
+				"account # " + currentAccount.getId() +
+				" is:\n $" + currentAccount.getBalance() + ".");
+		
+		return currentAccount.getBalance();
 	}
 	
 	/**
 	 * Deposit funds into a bank account.
-	 * @param account - the account to deposit into
+	 * @param amountStr - the amount to deposit
 	 */
 	public void deposit(String amountStr)
 	{
@@ -340,6 +329,60 @@ public class Bank
 		
 		JOptionPane.showMessageDialog(null, "Successfully deposited $" + amount +
 				" into " + currentAccount.getName() + "'s account." + 
+				"\nBalance for account # " + currentAccount.getId() +
+				" is $" + currentAccount.getBalance() + ".");
+	}
+	
+	/**
+	 * Withdraw funds into a bank account.
+	 * @param amountStr - the amount to withdraw
+	 */
+	public void withdraw(String amountStr)
+	{
+		if (currentAccount == null)
+		{
+			JOptionPane.showMessageDialog(null, "Withdraw failed, the given account was null.");
+			return;
+		}
+		
+		double amount = 0.0;
+		
+		// Error checking
+		if (amountStr == null)
+		{
+			JOptionPane.showMessageDialog(null, "Invalid withdraw amount.");
+			return;
+		}
+		
+		try
+		{
+			amount = Double.parseDouble(amountStr);
+		}
+		catch(NumberFormatException e)
+		{
+			JOptionPane.showMessageDialog(null, "Invalid withdraw amount input.");
+			return;
+		}
+		
+		if (amount <= 0)
+		{
+			JOptionPane.showMessageDialog(null, "Withdraw amount must be greater than 0.");
+			return;
+		}
+		
+		if (currentAccount.getBalance() >= amount)
+		{
+			currentAccount.withdraw(amount);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Withdraw failed:\n" + 
+				"The balance of the account is less than " + amount + ".");
+			return;
+		}
+		
+		JOptionPane.showMessageDialog(null, "Successfully withdrew $" + amount +
+				" from " + currentAccount.getName() + "'s account." + 
 				"\nBalance for account # " + currentAccount.getId() +
 				" is $" + currentAccount.getBalance() + ".");
 	}
