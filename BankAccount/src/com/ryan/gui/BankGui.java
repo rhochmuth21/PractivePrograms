@@ -39,7 +39,7 @@ public class BankGui implements ActionListener
 	private Associate currentAssociate = null;
 	
 	// Bank info
-	private Bank bank;
+	private Bank bank = new Bank(currentAssociate);
 	
 	// Gui Components
 	private JFrame frame = new JFrame();
@@ -762,7 +762,6 @@ public class BankGui implements ActionListener
 			ainText.setText("");
 			passText.setText("");
 			
-			bank = new Bank(currentAssociate);
 			showMainScreen();
 		}
 		
@@ -800,6 +799,7 @@ public class BankGui implements ActionListener
 		{
 			resetSideContent();
 			currentAssociate = null;
+			bank.setCurrentAccount(null);
 			showStartScreen();
 		}
 		

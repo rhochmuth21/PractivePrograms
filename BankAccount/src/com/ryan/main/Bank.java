@@ -352,4 +352,13 @@ public class Bank
 	{
 		return currentAccount;
 	}
+	
+	/**
+	 * Set the currentAccount
+	 * @return currentAccount - the current account
+	 */
+	public void setCurrentAccount(Account currentAccount)
+	{
+		this.currentAccount = currentAccount;
+	}
 }
