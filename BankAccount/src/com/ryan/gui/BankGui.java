@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,6 +23,8 @@ import javax.swing.JTextField;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 
+import com.ryan.account.CheckingAccount;
+import com.ryan.account.SavingsAccount;
 import com.ryan.associate.Associate;
 import com.ryan.associate.AssociateDatabase;
 import com.ryan.main.Bank;
@@ -86,6 +89,8 @@ public class BankGui implements ActionListener
 	private JLabel secondLbl = new JLabel();
 	private JTextField secondText = new JTextField();
 	private JButton sideOkBtn = new JButton();
+	private JLabel comboLbl = new JLabel();
+	private JComboBox<String> comboBox = new JComboBox<String>();
 	
 	// Fonts
 	private Font lintel = registerFont("src/res/Lintel-Regular.ttf", "Lintel", 24, false);
@@ -112,6 +117,9 @@ public class BankGui implements ActionListener
 		lookupBtn.addActionListener(this);
 		newCusBtn.addActionListener(this);
 		sideOkBtn.addActionListener(this);
+		
+		comboBox.addItem("Checking");
+		comboBox.addItem("Savings");
 		
 		// frame setup
 		frame.setResizable(false);
@@ -355,9 +363,17 @@ public class BankGui implements ActionListener
 		customerLbl.setBounds(90, 100, 600, 58);
 		customerLbl.setFont(lintelSmall);
 		
+		String accountType = "";
+		
+		if (bank.getCurrentAccount() instanceof CheckingAccount)
+			accountType = "Checking";
+		else if (bank.getCurrentAccount() instanceof SavingsAccount)
+			accountType = "Savings";
+		
 		if (bank.getCurrentAccount() != null)
-			customerLbl.setText("Customer: Name: " + bank.getCurrentAccount().getName() + ", Phone #: " + 
-								bank.getCurrentAccount().getPhoneNumber() + ", Balance: $ " + 
+			customerLbl.setText("Account Type: " + accountType + " Name: " + 
+								bank.getCurrentAccount().getName() + ", Account #: " + 
+								bank.getCurrentAccount().getId() + ", Balance: $ " + 
 								decForm.format(bank.getCurrentAccount().getBalance()));
 		else
 			customerLbl.setText("Customer: No current customer");
@@ -433,7 +449,7 @@ public class BankGui implements ActionListener
 		// newCusLbl setup
 		newCusLbl.setBounds(154, 592, 350, 58);
 		newCusLbl.setFont(lintel);
-		newCusLbl.setText("Create a new checking account");
+		newCusLbl.setText("Create a new account");
 		newCusLbl.setVisible(true);
 		
 		frame.repaint();
@@ -454,13 +470,17 @@ public class BankGui implements ActionListener
 		
 		bgLbl.add(customerLbl);
 		
-		// customerLbl setup
-		customerLbl.setBounds(90, 100, 600, 58);
-		customerLbl.setFont(lintelSmall);
+		String accountType = "";
+		
+		if (bank.getCurrentAccount() instanceof CheckingAccount)
+			accountType = "Checking";
+		else if (bank.getCurrentAccount() instanceof SavingsAccount)
+			accountType = "Savings";
 		
 		if (bank.getCurrentAccount() != null)
-			customerLbl.setText("Customer: Name: " + bank.getCurrentAccount().getName() + ", Phone #: " + 
-								bank.getCurrentAccount().getPhoneNumber() + ", Balance: $ " + 
+			customerLbl.setText("Account Type: " + accountType + " Name: " + 
+								bank.getCurrentAccount().getName() + ", Account #: " + 
+								bank.getCurrentAccount().getId() + ", Balance: $ " + 
 								decForm.format(bank.getCurrentAccount().getBalance()));
 		else
 			customerLbl.setText("Customer: No current customer");
@@ -557,6 +577,8 @@ public class BankGui implements ActionListener
 		bgLbl.remove(secondLbl);
 		bgLbl.remove(secondText);
 		bgLbl.remove(sideOkBtn);
+		bgLbl.remove(comboLbl);
+		bgLbl.remove(comboBox);
 		
 		frame.repaint();
 	}
@@ -564,12 +586,28 @@ public class BankGui implements ActionListener
 	/**
 	 * Show the GUI for creating a new account.
 	 */
-	public void createCheckingAccount()
+	public void createAccount()
 	{
+		bgLbl.add(comboLbl);
+		
+		// firstLbl setup
+		comboLbl.setBounds(800 + 90, 116, 400, 40);
+		comboLbl.setFont(lintel);
+		comboLbl.setText("Type of Account:");
+		comboLbl.setVisible(true);
+		
+		bgLbl.add(comboBox);
+		
+		// comboBox setup
+		comboBox.setSelectedIndex(0);
+		comboBox.setBounds(800 + 90, 156, 200, 40);
+		comboBox.setFont(lintel);
+		comboBox.setVisible(true);
+		
 		bgLbl.add(firstLbl);
 		
 		// firstLbl setup
-		firstLbl.setBounds(800 + 90, 116, 400, 40);
+		firstLbl.setBounds(800 + 90, 216, 400, 40);
 		firstLbl.setFont(lintel);
 		firstLbl.setText("Enter the Customer's Name:");
 		firstLbl.setVisible(true);
@@ -577,14 +615,14 @@ public class BankGui implements ActionListener
 		bgLbl.add(firstText);
 		
 		// firstText setup
-		firstText.setBounds(800 + 90, 156, 240, 40);
+		firstText.setBounds(800 + 90, 256, 240, 40);
 		firstText.setFont(lintel);
 		firstText.setVisible(true);
 		
 		bgLbl.add(secondLbl);
 		
 		// secondLbl setup
-		secondLbl.setBounds(800 + 90, 216, 400, 40);
+		secondLbl.setBounds(800 + 90, 316, 400, 40);
 		secondLbl.setFont(lintel);
 		secondLbl.setText("Enter the Customer's Phone #:");
 		secondLbl.setVisible(true);
@@ -592,7 +630,7 @@ public class BankGui implements ActionListener
 		bgLbl.add(secondText);
 		
 		// secondText setup
-		secondText.setBounds(800 + 90, 256, 240, 40);
+		secondText.setBounds(800 + 90, 356, 240, 40);
 		secondText.setFont(lintel);
 		secondText.setVisible(true);
 		
@@ -610,7 +648,7 @@ public class BankGui implements ActionListener
 		sideOkBtn.setVerticalTextPosition(JButton.CENTER);
 		sideOkBtn.setFont(lintel);
 		sideOkBtn.setForeground(Color.black);
-		sideOkBtn.setBounds(800 + 130, 316, 160, 50);
+		sideOkBtn.setBounds(800 + 130, 416, 160, 50);
 		sideOkBtn.setVisible(true);
 		
 		frame.repaint();
@@ -884,12 +922,12 @@ public class BankGui implements ActionListener
 			nameText.setText("");
 		}
 		
-		// Create Checking Account:
+		// Create Account:
 		if (e.getSource() == newCusBtn)
 		{
 			sideChoice = 100;
 			resetSideContent();
-			createCheckingAccount();
+			createAccount();
 		}
 		
 		/****************************************
@@ -917,7 +955,10 @@ public class BankGui implements ActionListener
 					break;
 			
 				case 100:
-					bank.createCheckingAccount(firstText.getText(), secondText.getText());
+					if (comboBox.getSelectedItem().equals("Checking"))
+						bank.createCheckingAccount(firstText.getText(), secondText.getText());
+					else if (comboBox.getSelectedItem().equals("Savings"))
+						bank.createSavingsAccount(firstText.getText(), secondText.getText());
 					resetSideContent();
 					showCustomerTab();
 					break;

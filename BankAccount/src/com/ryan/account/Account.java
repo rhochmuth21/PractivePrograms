@@ -17,8 +17,7 @@ public abstract class Account
 	// Account data
 	protected double balance;
 	protected long id;
-	protected String name;
-	protected String phoneNumber;
+	protected Customer customer;
 	
 	/**
 	 * Create a new account with the given
@@ -26,12 +25,10 @@ public abstract class Account
 	 * @param name - the name of the account owner
 	 * @param phoneNumber - the phone number of the account owner
 	 */
-	public Account(long id, String name, String phoneNumber)
+	public Account(long id, Customer customer)
 	{
 		this.id = id;
-		this.name = name;
-		this.phoneNumber = phoneNumber;
-		
+		this.customer = customer;
 		this.balance = 0.0;
 	}
 	

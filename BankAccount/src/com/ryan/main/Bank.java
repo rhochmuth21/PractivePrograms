@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import com.ryan.account.Account;
 import com.ryan.account.CheckingAccount;
+import com.ryan.account.SavingsAccount;
 import com.ryan.associate.Associate;
 
 /**
@@ -16,7 +17,7 @@ import com.ryan.associate.Associate;
 public class Bank 
 {
 	// The database containing all of the bank accounts
-	private AccountDatabase database = new AccountDatabase();
+	private BankDatabase database = new BankDatabase();
 	
 	// Current session data
 	private Account currentAccount = null;
@@ -66,6 +67,26 @@ public class Bank
 			Account account = lookupName(name);
 			
 			JOptionPane.showMessageDialog(null, "Successfully created a new checking account." + 
+					"\nAccount Holder's Name: " + account.getName() +
+					"\nAccount #: " + account.getId());
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Invalid input.");
+	}
+	
+	/**
+	 * Create a new savings account.
+	 */
+	public void createSavingsAccount(String name, String phone)
+	{
+		// Create the new account
+		if (name != null && phone != null && !name.equals("") && !phone.equals(""))
+		{
+			database.addNewAccount(new SavingsAccount(database.generateId(), name, phone));
+			
+			Account account = lookupName(name);
+			
+			JOptionPane.showMessageDialog(null, "Successfully created a new savings account." + 
 					"\nAccount Holder's Name: " + account.getName() +
 					"\nAccount #: " + account.getId());
 		}
